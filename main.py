@@ -1,11 +1,13 @@
 import json
-from src.classes import Product, Category
+
+from src.classes import Category, Product
+
 
 def load_data_from_json(filepath="products.json"):
     """
     Загружает данные из JSON-файла и создает объекты Category и Product.
     """
-    with open(filepath, 'r', encoding='utf-8') as file:
+    with open(filepath, "r", encoding="utf-8") as file:
         data = json.load(file)
 
     categories = []
@@ -16,18 +18,17 @@ def load_data_from_json(filepath="products.json"):
                 name=product_data.get("name"),
                 description=product_data.get("description"),
                 price=float(product_data.get("price")),
-                quantity=int(product_data.get("quantity"))
+                quantity=int(product_data.get("quantity")),
             )
             products_in_category.append(product)
 
         category = Category(
-            name=category_data.get("name"),
-            description=category_data.get("description"),
-            products=products_in_category
+            name=category_data.get("name"), description=category_data.get("description"), products=products_in_category
         )
         categories.append(category)
 
     return categories
+
 
 if __name__ == "__main__":
     print("\n--- Загрузка данных из JSON ---")
