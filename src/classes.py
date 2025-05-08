@@ -99,7 +99,7 @@ class Category:
     def products(self):
         """Геттер для вывода списка товаров"""
         return "\n".join([f"{prod.name}, {prod.price} руб. Остаток: {prod.quantity} шт." for prod in self.__products])
-        
+
     def __iter__(self):
         return CategoryIterator(self.__products)
 
@@ -118,4 +118,3 @@ class CategoryIterator:
 
     def __iter__(self):
         return self
-

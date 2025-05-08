@@ -90,10 +90,12 @@ def test_new_product_without_duplicate():
     product = Product.new_product(new_data)
     assert product.name == "New"
     assert product.price == 200
-    
+
+
 def test_product_str():
     p = Product("Test", "Test desc", 100, 3)
     assert str(p) == "Test, 100 руб. Остаток: 3 шт."
+
 
 def test_category_str():
     p1 = Product("A", "desc", 100, 2)
