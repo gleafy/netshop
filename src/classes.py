@@ -18,9 +18,9 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if isinstance(other, Product):
-            return self.price * self.quantity + other.price * other.quantity
-        return
+        if type(self) != type(other):
+            raise TypeError("Нельзя складывать товары разных классов")
+        return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
     def new_product(cls, product_data, products=None):
@@ -91,7 +91,7 @@ class Category:
     def add_product(self, product):
         """Добавляет продукт в приватный список"""
         if not isinstance(product, Product):
-            raise ValueError("Можно добавлять только объекты Product")
+            raise TypeError("Можно добавлять только объекты Product и его наследников")
         self.__products.append(product)
         Category.product_count += 1
 
@@ -102,6 +102,27 @@ class Category:
 
     def __iter__(self):
         return CategoryIterator(self.__products)
+
+
+class Smartphone(Product):
+    """Класс для смартфонов."""
+
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Класс для газонной травы."""
+
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
 
 
 class CategoryIterator:
