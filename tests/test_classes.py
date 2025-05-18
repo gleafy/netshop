@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, LawnGrass, Product, Smartphone
+from src.classes import BaseProduct, Category, LawnGrass, LogMixin, Product, Smartphone
 
 
 def test_product_init():
@@ -149,3 +149,26 @@ def test_add_non_product_to_category():
     category = Category("Test", "Test", [])
     with pytest.raises(TypeError):
         category.add_product("Not a product")
+
+
+def test_base_product_abstract():
+    with pytest.raises(TypeError):
+        BaseProduct()
+
+
+def test_log_mixin(capsys):
+    p = Product("Test", "Desc", 100, 5)
+    captured = capsys.readouterr()
+    assert "Создан объект Product с параметрами:" in captured.out
+
+
+def test_log_mixin_repr():
+    product = Product("Test", "Desc", 100, 5)
+    assert repr(product) == f"Product({product.__dict__})"
+
+
+def test_all_classes_inherit_mixin():
+    """Проверка наследования миксина."""
+    assert issubclass(Product, LogMixin)
+    assert issubclass(Smartphone, LogMixin)
+    assert issubclass(LawnGrass, LogMixin)
