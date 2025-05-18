@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, Product, Smartphone, LawnGrass
+from src.classes import Category, LawnGrass, Product, Smartphone
 
 
 def test_product_init():
@@ -118,31 +118,32 @@ def test_category_iteration():
     names = [p.name for p in cat]
     assert names == ["A", "B"]
 
+
 def test_smartphone_init():
-    smartphone = Smartphone(
-        "iPhone", "Desc", 100000, 5, "High", "15 Pro", 512, "Black"
-    )
+    smartphone = Smartphone("iPhone", "Desc", 100000, 5, "High", "15 Pro", 512, "Black")
     assert smartphone.name == "iPhone"
     assert smartphone.efficiency == "High"
     assert isinstance(smartphone, Product)
 
+
 def test_lawn_grass_init():
-    grass = LawnGrass(
-        "Grass", "Desc", 500, 10, "Russia", "7 дней", "Green"
-    )
+    grass = LawnGrass("Grass", "Desc", 500, 10, "Russia", "7 дней", "Green")
     assert grass.country == "Russia"
     assert isinstance(grass, Product)
+
 
 def test_add_same_class():
     p1 = Smartphone("A", "Desc", 100, 2, "High", "X", 128, "Black")
     p2 = Smartphone("B", "Desc", 200, 3, "Mid", "Y", 256, "White")
-    assert p1 + p2 == 100*2 + 200*3
+    assert p1 + p2 == 100 * 2 + 200 * 3
+
 
 def test_add_different_classes():
     p1 = Smartphone("A", "Desc", 100, 2, "High", "X", 128, "Black")
     p2 = LawnGrass("B", "Desc", 200, 3, "USA", "5 дней", "Green")
     with pytest.raises(TypeError):
         p1 + p2
+
 
 def test_add_non_product_to_category():
     category = Category("Test", "Test", [])

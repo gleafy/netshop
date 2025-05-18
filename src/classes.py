@@ -94,7 +94,7 @@ class Category:
             raise TypeError("Можно добавлять только объекты Product и его наследников")
         self.__products.append(product)
         Category.product_count += 1
-        
+
     @property
     def products(self):
         """Геттер для вывода списка товаров"""
@@ -103,9 +103,10 @@ class Category:
     def __iter__(self):
         return CategoryIterator(self.__products)
 
+
 class Smartphone(Product):
     """Класс для смартфонов."""
-    
+
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
@@ -116,12 +117,13 @@ class Smartphone(Product):
 
 class LawnGrass(Product):
     """Класс для газонной травы."""
-    
+
     def __init__(self, name, description, price, quantity, country, germination_period, color):
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
         self.color = color
+
 
 class CategoryIterator:
     def __init__(self, products):
