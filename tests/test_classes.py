@@ -90,3 +90,30 @@ def test_new_product_without_duplicate():
     product = Product.new_product(new_data)
     assert product.name == "New"
     assert product.price == 200
+
+
+def test_product_str():
+    p = Product("Test", "Test desc", 100, 3)
+    assert str(p) == "Test, 100 руб. Остаток: 3 шт."
+
+
+def test_category_str():
+    p1 = Product("A", "desc", 100, 2)
+    p2 = Product("B", "desc", 200, 3)
+    cat = Category("Test Cat", "desc", [p1, p2])
+    assert str(cat) == "Test Cat, количество продуктов: 5 шт."
+
+
+def test_add_products():
+    p1 = Product("A", "desc", 100, 2)
+    p2 = Product("B", "desc", 200, 3)
+    result = p1 + p2
+    assert result == 100 * 2 + 200 * 3
+
+
+def test_category_iteration():
+    p1 = Product("A", "desc", 100, 2)
+    p2 = Product("B", "desc", 200, 3)
+    cat = Category("Phones", "desc", [p1, p2])
+    names = [p.name for p in cat]
+    assert names == ["A", "B"]

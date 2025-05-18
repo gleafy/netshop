@@ -14,6 +14,14 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if isinstance(other, Product):
+            return self.price * self.quantity + other.price * other.quantity
+        return
+
     @classmethod
     def new_product(cls, product_data, products=None):
         """Класс-метод для создания товара из словаря с проверкой дубликатов"""
@@ -74,6 +82,12 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
+    def __str__(self):
+        total_quantity = 0
+        for product in self.__products:
+            total_quantity += product.quantity
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
     def add_product(self, product):
         """Добавляет продукт в приватный список"""
         if not isinstance(product, Product):
@@ -85,3 +99,22 @@ class Category:
     def products(self):
         """Геттер для вывода списка товаров"""
         return "\n".join([f"{prod.name}, {prod.price} руб. Остаток: {prod.quantity} шт." for prod in self.__products])
+
+    def __iter__(self):
+        return CategoryIterator(self.__products)
+
+
+class CategoryIterator:
+    def __init__(self, products):
+        self.products = products
+        self.index = 0
+
+    def __next__(self):
+        if self.index < len(self.products):
+            result = self.products[self.index]
+            self.index += 1
+            return result
+        raise StopIteration
+
+    def __iter__(self):
+        return self
