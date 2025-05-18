@@ -12,7 +12,6 @@ class LogMixin:
         print(f"Создан объект {self.__class__.__name__} с параметрами: {self.__dict__}")
 
 
-
 class BaseProduct(ABC, LogMixin):
     """Абстрактный класс, задающий обязательные методы для всех продуктов."""
 
