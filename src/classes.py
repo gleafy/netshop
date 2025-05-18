@@ -1,4 +1,30 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class LogMixin:
+    """Миксин для логирования создания объектов."""
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.__dict__})"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(f"Создан объект {self.__class__.__name__} с параметрами: {self.__dict__}")
+
+
+
+class BaseProduct(ABC, LogMixin):
+    """Абстрактный класс, задающий обязательные методы для всех продуктов."""
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+    def __str__(self):
+        pass
+
+
+class Product(BaseProduct, LogMixin):
     """
     Класс для описания товара в магазине.
     """
@@ -13,6 +39,7 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
@@ -104,7 +131,7 @@ class Category:
         return CategoryIterator(self.__products)
 
 
-class Smartphone(Product):
+class Smartphone(Product, LogMixin):
     """Класс для смартфонов."""
 
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
@@ -115,7 +142,7 @@ class Smartphone(Product):
         self.color = color
 
 
-class LawnGrass(Product):
+class LawnGrass(Product, LogMixin):
     """Класс для газонной травы."""
 
     def __init__(self, name, description, price, quantity, country, germination_period, color):
