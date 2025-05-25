@@ -132,7 +132,6 @@ class Category:
         finally:
             print("Обработка добавления товара завершена.")
 
-
     @property
     def products(self):
         """Геттер для вывода списка товаров"""
@@ -140,7 +139,7 @@ class Category:
 
     def __iter__(self):
         return CategoryIterator(self.__products)
-    
+
     def middle_price(self):
         try:
             total_price = sum([product.price for product in self.__products])
@@ -185,6 +184,8 @@ class CategoryIterator:
     def __iter__(self):
         return self
 
+
 class ZeroQuantityProductError(Exception):
     """Исключение при добавлении товара с нулевым количеством."""
+
     pass
