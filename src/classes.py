@@ -34,6 +34,8 @@ class Product(BaseProduct, LogMixin):
     quantity: int
 
     def __init__(self, name, description, price, quantity):
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self.__price = price
@@ -116,10 +118,19 @@ class Category:
 
     def add_product(self, product):
         """Добавляет продукт в приватный список"""
-        if not isinstance(product, Product):
-            raise TypeError("Можно добавлять только объекты Product и его наследников")
-        self.__products.append(product)
-        Category.product_count += 1
+        try:
+            if not isinstance(product, Product):
+                raise TypeError("Можно добавлять только объекты Product и его наследников")
+            if product.quantity == 0:
+                raise ZeroQuantityProductError("Нельзя добавить товар с нулевым количеством")
+        except ZeroQuantityProductError as e:
+            print(e)
+        else:
+            self.__products.append(product)
+            Category.product_count += 1
+            print(f"Товар '{product.name}' добавлен.")
+        finally:
+            print("Обработка добавления товара завершена.")
 
     @property
     def products(self):
@@ -128,6 +139,13 @@ class Category:
 
     def __iter__(self):
         return CategoryIterator(self.__products)
+
+    def middle_price(self):
+        try:
+            total_price = sum([product.price for product in self.__products])
+            return total_price / len(self.__products)
+        except ZeroDivisionError:
+            return 0
 
 
 class Smartphone(Product, LogMixin):
@@ -165,3 +183,9 @@ class CategoryIterator:
 
     def __iter__(self):
         return self
+
+
+class ZeroQuantityProductError(Exception):
+    """Исключение при добавлении товара с нулевым количеством."""
+
+    pass

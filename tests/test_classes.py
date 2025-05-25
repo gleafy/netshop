@@ -172,3 +172,34 @@ def test_all_classes_inherit_mixin():
     assert issubclass(Product, LogMixin)
     assert issubclass(Smartphone, LogMixin)
     assert issubclass(LawnGrass, LogMixin)
+
+
+def test_zero_quantity_raises():
+    """Тест создания продукта с количеством 0"""
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("Zero", "Desc", 100, 0)
+
+
+def test_middle_price():
+    """Тест среднего ценника"""
+    p1 = Product("A", "desc", 100, 2)
+    p2 = Product("B", "desc", 200, 3)
+    cat = Category("Test Cat", "desc", [p1, p2])
+    assert cat.middle_price() == 150
+
+
+def test_middle_price_empty():
+    """Тест среднего ценника для пустой категории"""
+    cat = Category("Empty", "desc", [])
+    assert cat.middle_price() == 0
+
+
+def test_add_product_zero_quantity(capsys):
+    product = Product("Test1", "desc", 100, 1)
+    product_zero = Product("Test2", "desc", 100, 1)
+    product_zero.quantity = 0
+    cat = Category("Тест", "Описание", [])
+    cat.add_product(product_zero)
+    captured = capsys.readouterr()
+    assert "Нельзя добавить товар с нулевым количеством" in captured.out
+    assert "Обработка добавления товара завершена." in captured.out
