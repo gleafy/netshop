@@ -1,3 +1,5 @@
+from src.classes import Category, Product
+
 if __name__ == '__main__':
     try:
         product_invalid = Product("Бракованный товар", "Неверное количество", 1000.0, 0)
